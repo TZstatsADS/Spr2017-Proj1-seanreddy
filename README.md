@@ -7,6 +7,7 @@
 ### [Project Description](doc/)
 
 Author: Sean Reddy
+
 Term: Spring 2017
 
 + Project Title: TL;DR: Inaugural Speeches
