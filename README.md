@@ -2,18 +2,22 @@
 # Project 1: What did the presidents say at their inauguation?
 
 ![image](figs/title.jpg)
+![image](figs/tldr.png)
 
 ### [Project Description](doc/)
-This is the first and only *individual* (as opposed to *team*) this semester. 
 
+Author: Sean Reddy
 Term: Spring 2017
 
-+ Projec title: Lorem ipsum dolor sit amet
-+ This project is conducted by [your name]
++ Project Title: TL;DR: Inaugural Speeches
 
-+ Project summary: [a short summary] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ Project summary:
+With some inaugural speeches spanning almost two hours and nearly 8500 words of exceptionally verbiose rhetoric, it can be difficult to properly digest the meaning behind a president-elect's induction address. In this notebook, I sought out to ameliorate this problem for every presidential inauguration speech by creating, what's known on the internet as, a TL;DR.
 
-Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
+What does TL;DR mean? TL;DR is a commonly used acronym on the internet for "Too Long; Didn't Read" which indicates that a passage of text was so long that the user cannot be bothered to read and sift through it. The acronym is colloquially used as a noun to define a summarized version of the aforementioned passage of text. This tool provides a TL;DR for all of the inauguration speeches from the inception of the United States of America.
+
+
+This folder is organized as follows.
 
 ```
 proj/
