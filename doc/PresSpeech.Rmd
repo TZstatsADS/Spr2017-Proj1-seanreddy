@@ -23,7 +23,19 @@ As such, I've created a tool that employs:
 * Synonym Set Cover
 * Term Frequency Weightings
 
-to identify important themes of the speeches allowing us to find the most representative sentences within a given speech. To illustrate this tool, we will be analyzing the presidential address by Donald J. Trump in the notebook below.
+to identify important themes of the speeches allowing us to find the most representative sentences within a given speech. 
+
+While using a similar approach to the widely used strategies in topic modelling, I chose a different methodology in finding meaning in these speeches through using synonymous words with several reasons in mind:
+
+1) Simplicity to the layman over something like LDA.
+
+2) Closely pinpoint specific word usage (still grouping "dog" and "canine" but not "dog" and "bone" like LDA might).
+
+3) Unbounded in the number of topics we expect to see (rather than specifying k topics as in an LDA model) as we do not know what will generally be covered topically from speech to speech -- to complement point (1), this is one less parameter a layman may need to input.
+
+4) Specifically target illustrative sentences rather than overall topics.
+
+With no promises that this model will outperform LDA, LSA, or any other traditional topic modelling approaches, I am hopeful that we will see some interesting results nonetheless. To illustrate this tool, we will be analyzing the presidential address by Donald J. Trump in the notebook below.
 
 Let's take a look.
 
@@ -241,10 +253,12 @@ solveSetCover <- function(dff) {
 
 # Step 8 - Finding Term Frequency
 
-With the minimal matrix produced above, we can now find the term frequency of how often each 'theme' was used. This is calculated by summing across the rows of the matrix we produced in the previous step, giving us the number of occurrences of that theme. We can then multiply these row sums by the binary matrix itself which will yield a matrix with values for the term frequency in the respective columns of each word in the speech. In the aforementioned example, "smoke" and "fumes" columns will each have a 2 in the corresponding element of the mutual synonym chosen. Taking the maximum of each column will yield the maximum number of occurrences that word has throughout the speech. We will use this as our term frequency. Applying this term frequency and summing over each sentence will give a word-occurrence score for each sentence. If we now sort by highest score, we can find the sentences which represent the most present themes within the entire speech.
+With the minimal matrix produced above, we can now find the term frequency of how often each 'theme' was used. This is calculated by summing across the rows of the matrix we produced in the previous step, giving us the number of occurrences of that theme. We can then multiply these row sums by the binary matrix itself which will yield a matrix with values for the term frequency in the respective columns of each word in the speech. In the aforementioned example, "smoke" and "fumes" columns will each have a 2 in the corresponding element of the mutual synonym chosen. Taking the maximum of each column will yield the maximum number of occurrences that word has throughout the speech. We will use this as our term frequency. Applying this term frequency and summing over each sentence will give a word-occurrence score for each sentence. If we now sort by highest score, we can find the sentences which represent the most present themes within the entire speech. 
 
-*Please note that each theme is not necessarily a word present in the speech at all, as it may merely be a synonym of two or more words present in the speech that encapsulates the definition of both or all of them*
 
+*Note 1: Please note that each theme is not necessarily a word present in the speech at all, as it may merely be a synonym of two or more words present in the speech that encapsulates the definition of both or all of them*
+
+*Note 2: As we are only looking at 1 document, the lack of a corpus restrains us from using a proper tf-idf method. If we had say, a corpus of speeches from Donald Trump, then we could take this term frequency and apply it in the traditional tf-idf manner. Using the other speeches as the corpus is an approach that you may take, however this may skew your results in unexpected ways. This is a clear shortcoming of this method, and I plan to look into it going forward.*
 
 
 ```{r}
@@ -329,6 +343,12 @@ tldr
 print(paste("Total Word Reduction:", round((orig-reduced)/orig*100,2), "%"))
 ```
 
+
+# Bonus
+
+I have included a few additional TL;DR's below for your viewing pleasure.
+
+
 ```{r}
 otherSpeeches <- read.csv('../output/tldr_1thru58.csv', as.is=TRUE)[,2]
 otherSpeeches <- as.data.frame(cbind(presidents$File, otherSpeeches, presidents$Words))
@@ -343,10 +363,6 @@ otherSpeech_print <- function(speechNum){
 }
 
 ```
-
-# Bonus
-
-I have included a few additional TL;DR's below for your viewing pleasure.
 
 
 ### Abraham Lincoln's 2nd Term

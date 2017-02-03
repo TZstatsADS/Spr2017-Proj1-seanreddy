@@ -137,7 +137,15 @@ $(document).ready(function () {
 <li>Synonym Set Cover</li>
 <li>Term Frequency Weightings</li>
 </ul>
-<p>to identify important themes of the speeches allowing us to find the most representative sentences within a given speech. To illustrate this tool, we will be analyzing the presidential address by Donald J. Trump in the notebook below.</p>
+<p>to identify important themes of the speeches allowing us to find the most representative sentences within a given speech.</p>
+<p>While using a similar approach to the widely used strategies in topic modelling, I chose a different methodology in finding meaning in these speeches through using synonymous words with several reasons in mind:</p>
+<ol style="list-style-type: decimal">
+<li><p>Simplicity to the layman over something like LDA.</p></li>
+<li><p>Closely pinpoint specific word usage (still grouping “dog” and “canine” but not “dog” and “bone” like LDA might).</p></li>
+<li><p>Unbounded in the number of topics we expect to see (rather than specifying k topics as in an LDA model) as we do not know what will generally be covered topically from speech to speech – to complement point (1), this is one less parameter a layman may need to input.</p></li>
+<li><p>Specifically target illustrative sentences rather than overall topics.</p></li>
+</ol>
+<p>With no promises that this model will outperform LDA, LSA, or any other traditional topic modelling approaches, I am hopeful that we will see some interesting results nonetheless. To illustrate this tool, we will be analyzing the presidential address by Donald J. Trump in the notebook below.</p>
 <p>Let’s take a look.</p>
 <p><em>Please note that while this notebook only showcases the most recent inaugural speech, I have included the code in step 11 to generate the TL;DR for all presidents in US history. Additionally, I have included a CSV located in the ../output/ directory which contains the summary generated with the same process for all presidential speeches.</em></p>
 <div id="step-1---install-and-load-libraries" class="section level1">
@@ -324,7 +332,8 @@ for (pres in numSpeeches) {
 <div id="step-8---finding-term-frequency" class="section level1">
 <h1>Step 8 - Finding Term Frequency</h1>
 <p>With the minimal matrix produced above, we can now find the term frequency of how often each ‘theme’ was used. This is calculated by summing across the rows of the matrix we produced in the previous step, giving us the number of occurrences of that theme. We can then multiply these row sums by the binary matrix itself which will yield a matrix with values for the term frequency in the respective columns of each word in the speech. In the aforementioned example, “smoke” and “fumes” columns will each have a 2 in the corresponding element of the mutual synonym chosen. Taking the maximum of each column will yield the maximum number of occurrences that word has throughout the speech. We will use this as our term frequency. Applying this term frequency and summing over each sentence will give a word-occurrence score for each sentence. If we now sort by highest score, we can find the sentences which represent the most present themes within the entire speech.</p>
-<p><em>Please note that each theme is not necessarily a word present in the speech at all, as it may merely be a synonym of two or more words present in the speech that encapsulates the definition of both or all of them</em></p>
+<p><em>Note 1: Please note that each theme is not necessarily a word present in the speech at all, as it may merely be a synonym of two or more words present in the speech that encapsulates the definition of both or all of them</em></p>
+<p><em>Note 2: As we are only looking at 1 document, the lack of a corpus restrains us from using a proper tf-idf method. If we had say, a corpus of speeches from Donald Trump, then we could take this term frequency and apply it in the traditional tf-idf manner. Using the other speeches as the corpus is an approach that you may take, however this may skew your results in unexpected ways. This is a clear shortcoming of this method, and I plan to look into it going forward.</em></p>
 <pre class="r"><code>create_tldr &lt;- function(dff, aaa, pres, numSentences) {
   
   dff2 &lt;- subset(dff, as.logical(aaa))
@@ -394,6 +403,10 @@ tldr</code></pre>
 <pre><code>## [1] &quot;We will face challenges, we will confront hardships, but we will get the job done. One by one, the factories shuttered and left our shores, with not even a thought about the millions and millions of American workers that were left behind. We will get our people off of welfare and back to work, rebuilding our country with American hands and American labor. We will reinforce old alliances and form new ones and unite the civilized world against radical Islamic terrorism, which we will eradicate from the face of the Earth. At the bedrock of our politics will be a total allegiance to the United States of America, and through our loyalty to our country, we will rediscover our loyalty to each other.&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Total Word Reduction:&quot;, round((orig-reduced)/orig*100,2), &quot;%&quot;))</code></pre>
 <pre><code>## [1] &quot;Total Word Reduction: 91.55 %&quot;</code></pre>
+</div>
+<div id="bonus" class="section level1">
+<h1>Bonus</h1>
+<p>I have included a few additional TL;DR’s below for your viewing pleasure.</p>
 <pre class="r"><code>otherSpeeches &lt;- read.csv('../output/tldr_1thru58.csv', as.is=TRUE)[,2]
 otherSpeeches &lt;- as.data.frame(cbind(presidents$File, otherSpeeches, presidents$Words))
 colnames(otherSpeeches) &lt;- c(&quot;President&quot;, &quot;Speech&quot;, &quot;Words&quot;)
@@ -405,10 +418,6 @@ otherSpeech_print &lt;- function(speechNum){
   print(add_speech)
   print(paste(&quot;Total Word Reduction:&quot;, round((orig-reduced)/orig*100,2), &quot;%&quot;))
 }</code></pre>
-</div>
-<div id="bonus" class="section level1">
-<h1>Bonus</h1>
-<p>I have included a few additional TL;DR’s below for your viewing pleasure.</p>
 <div id="abraham-lincolns-2nd-term" class="section level3">
 <h3>Abraham Lincoln’s 2nd Term</h3>
 <pre class="r"><code>otherSpeech_print(2)</code></pre>
